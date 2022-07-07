@@ -9,8 +9,9 @@ const CreateLinkForm = dynamic(() => import("../components/CreateLink"), {
 const Home: NextPage = () => {
     return (
         <div>
-            <Suspense>{/* <CreateLinkForm /> */}</Suspense>
-            <h1>Hi</h1>
+            <Suspense>
+                <CreateLinkForm />
+            </Suspense>
         </div>
     );
 };
