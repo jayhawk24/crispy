@@ -1,3 +1,5 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
     content: ["./src/pages/**/*.{ts,tsx}", "./src/components/**/*.{ts,tsx}"],
     theme: {
@@ -9,6 +11,10 @@ module.exports = {
                 secondary: {
                     100: "#ADE8F4"
                 }
+            },
+            fontFamily: {
+                sans: ["Raleway", ...defaultTheme.fontFamily.sans],
+                oswald: ["Oswald", "sans-serif"]
             }
         }
     },
