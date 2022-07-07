@@ -2,9 +2,7 @@ import { Button } from "@chakra-ui/react";
 import React from "react";
 import Logo from "../Logo/Logo";
 
-type Props = {};
-
-const Header = (props: Props) => {
+const Header = () => {
     return (
         <div className="py-5 w-full flex justify-between items-center">
             <Logo />

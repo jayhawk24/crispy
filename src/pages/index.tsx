@@ -13,7 +13,7 @@ const CreateLinkForm = dynamic(
 
 const Home: NextPage = () => {
     return (
-        <div className="bg-secondary-100 h-screen w-screen px-20 overflow-hidden">
+        <div className="bg-secondary-100 h-screen w-screen lg:px-20 md:px-10 px-5 overflow-hidden">
             <Header />
             <Suspense>
                 <CreateLinkForm />
