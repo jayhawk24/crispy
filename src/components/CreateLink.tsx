@@ -24,12 +24,11 @@ const CreateLinkForm: NextPage = () => {
     if (createSlug.status === "success") {
         return (
             <>
-                <div className="flex justify-center items-center">
+                <div>
                     <h1>{`${url}/${form.slug}`}</h1>
                     <input
                         type="button"
                         value="Copy Link"
-                        className="rounded bg-pink-500 py-1.5 px-1 font-bold cursor-pointer ml-2"
                         onClick={() => {
                             copy(`${url}/${form.slug}`);
                         }}
@@ -38,7 +37,6 @@ const CreateLinkForm: NextPage = () => {
                 <input
                     type="button"
                     value="Reset"
-                    className="rounded bg-pink-500 py-1.5 px-1 font-bold cursor-pointer m-5"
                     onClick={() => {
                         createSlug.reset();
                         setForm({ slug: "", url: "" });
@@ -54,15 +52,10 @@ const CreateLinkForm: NextPage = () => {
                 e.preventDefault();
                 createSlug.mutate({ ...form });
             }}
-            className="flex flex-col justify-center h-screen sm:w-2/3 md:w-1/2 lg:w-1/3"
         >
-            {slugCheck.data?.used && (
-                <span className="font-medium mr-2 text-center text-red-500">
-                    Slug already in use.
-                </span>
-            )}
-            <div className="flex items-center">
-                <span className="font-medium mr-2">{url}/</span>
+            {slugCheck.data?.used && <span>Slug already in use.</span>}
+            <div>
+                <span>{url}/</span>
                 <input
                     type="text"
                     onChange={(e) => {
@@ -82,7 +75,6 @@ const CreateLinkForm: NextPage = () => {
                 <input
                     type="button"
                     value="Random"
-                    className="rounded bg-pink-500 py-1.5 px-1 font-bold cursor-pointer ml-2"
                     onClick={() => {
                         const slug = nanoid();
                         setForm({
@@ -93,8 +85,8 @@ const CreateLinkForm: NextPage = () => {
                     }}
                 />
             </div>
-            <div className="flex items-center">
-                <span className="font-medium mr-2">Link</span>
+            <div>
+                <span>Link</span>
                 <input
                     type="url"
                     onChange={(e) => setForm({ ...form, url: e.target.value })}
@@ -105,7 +97,6 @@ const CreateLinkForm: NextPage = () => {
             <input
                 type="submit"
                 value="Create"
-                className="rounded bg-pink-500 p-1 font-bold cursor-pointer mt-1"
                 disabled={slugCheck.isFetched && slugCheck.data!.used}
             />
         </form>
