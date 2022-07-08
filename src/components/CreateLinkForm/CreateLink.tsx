@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import debounce from "lodash.debounce";
 import { trpc } from "../../utils/trpc";
@@ -15,7 +15,7 @@ type Form = {
 
 const CreateLinkForm: NextPage = () => {
     const [form, setForm] = useState<Form>({ slug: "", url: "" });
-
+    const [randomWord, setRandomWord] = useState("");
     const url = typeof window !== "undefined" ? window.location.origin : "";
 
     const slugCheck = trpc.useQuery(["slugCheck", { slug: form.slug }], {
@@ -52,6 +52,14 @@ const CreateLinkForm: NextPage = () => {
             </div>
         );
     }
+
+    useEffect(() => {
+        fetch("https://random-word-api.herokuapp.com/word").then((res) =>
+            res.json().then((res) => {
+                setRandomWord(res[0]);
+            })
+        );
+    }, []);
 
     return (
         <form
@@ -90,7 +98,7 @@ const CreateLinkForm: NextPage = () => {
                                 debounce(slugCheck.refetch, 100);
                             }}
                             minLength={1}
-                            placeholder="rothaniel"
+                            placeholder={randomWord}
                             value={form.slug}
                             pattern={"^[-a-zA-Z0-9]+$"}
                             title="Only alphanumeric characters and hypens are allowed. No spaces."
