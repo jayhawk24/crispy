@@ -18,6 +18,20 @@ export const appRouter = trpc
             return { used: count > 0 };
         }
     })
+    .query("getSlugs", {
+        input: z.object({
+            userId: z.string()
+        }),
+        async resolve({ input }) {
+            if (!input.userId) return;
+            const slugs = await prisma.shortLink.findMany({
+                where: {
+                    slug: input.userId
+                }
+            });
+            return { slugs };
+        }
+    })
     .mutation("createSlug", {
         input: z.object({
             slug: z.string(),
