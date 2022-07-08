@@ -4,6 +4,7 @@ import { ShortLink } from "@prisma/client";
 import copy from "copy-to-clipboard";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import React from "react";
 import { trpc } from "../utils/trpc";
 
@@ -22,10 +23,16 @@ const URLs: NextPage = () => {
     if (status === "loading") {
         return <div>Loading...</div>;
     }
-    if (status !== "authenticated") return <div>Please Login</div>;
-    const url = typeof window !== "undefined" ? window.location.origin : "";
+    if (status !== "authenticated")
+        return (
+            <div className="w-full text-center text-sm font-light font-sans">
+                Please login to see your URLs.
+            </div>
+        );
 
+    const url = typeof window !== "undefined" ? window.location.origin : "";
     const slugs = getSlugs.data?.slugs as ShortLink[];
+
     return (
         <div className="w-full h-full flex flex-col items-center space-y-20 ">
             <h1 className="font-sans font-semibold text-lg ">
@@ -62,6 +69,20 @@ const URLs: NextPage = () => {
                         </div>
                     </div>
                 ))}
+                {slugs?.length === 0 && (
+                    <div className="flex flex-col items-center justify-center">
+                        <h1 className="font-sans font-light text-sm">
+                            You have no URLs yet.
+                        </h1>
+                        <Button
+                            variant="ghost"
+                            colorScheme="teal"
+                            className="font-sans font-light text- mt-2"
+                        >
+                            <Link href="/">Create one now!</Link>
+                        </Button>
+                    </div>
+                )}
             </div>
         </div>
     );
