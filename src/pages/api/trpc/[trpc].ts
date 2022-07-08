@@ -20,7 +20,7 @@ export const appRouter = trpc
     })
     .query("getSlugs", {
         input: z.object({
-            userId: z.string()
+            userId: z.union([z.string(), z.null()])
         }),
         async resolve({ input }) {
             if (!input.userId) return { slugs: [] };
