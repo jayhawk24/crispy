@@ -7,6 +7,8 @@ import copy from "copy-to-clipboard";
 import { Button } from "@chakra-ui/react";
 import Image from "next/image";
 import BannerSvg from "./BannerSvg";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 type Form = {
     slug: string;
@@ -24,6 +26,18 @@ const CreateLinkForm: NextPage = () => {
         refetchOnWindowFocus: false
     });
     const createSlug = trpc.useMutation(["createSlug"]);
+    const { data: session, status } = useSession();
+
+    useEffect(() => {
+        getRandomName().then((response) => setRandomWord(response));
+    }, []);
+
+    const getRandomName = () =>
+        fetch("https://random-word-api.herokuapp.com/word").then((res) =>
+            res.json().then((res: string[]) => {
+                return res[0];
+            })
+        );
 
     if (createSlug.status === "success") {
         return (
@@ -40,33 +54,39 @@ const CreateLinkForm: NextPage = () => {
                         Copy Link
                     </Button>
                 </div>
-                <Button
-                    type="button"
-                    onClick={() => {
-                        createSlug.reset();
-                        setForm({ slug: "", url: "" });
-                    }}
-                >
-                    Reset
-                </Button>
+                <div className="flex justify-between">
+                    <Button
+                        type="button"
+                        onClick={() => {
+                            createSlug.reset();
+                            setForm({ slug: "", url: "" });
+                        }}
+                    >
+                        Reset
+                    </Button>
+                    {status === "authenticated" && (
+                        <Button
+                            type="button"
+                            variant="solid"
+                            colorScheme="teal"
+                        >
+                            <Link href="urls">My URLs</Link>
+                        </Button>
+                    )}
+                </div>
             </div>
         );
     }
-
-    useEffect(() => {
-        fetch("https://random-word-api.herokuapp.com/word").then((res) =>
-            res.json().then((res) => {
-                setRandomWord(res[0]);
-            })
-        );
-    }, []);
 
     return (
         <form
             className="space-y-8"
             onSubmit={(e) => {
                 e.preventDefault();
-                createSlug.mutate({ ...form });
+                createSlug.mutate({
+                    ...form,
+                    userId: (session?.userId || "") as string
+                });
             }}
         >
             <div className="flex flex-col">
@@ -95,7 +115,7 @@ const CreateLinkForm: NextPage = () => {
                                     ...form,
                                     slug: e.target.value
                                 });
-                                debounce(slugCheck.refetch, 100);
+                                debounce(slugCheck.refetch, 500);
                             }}
                             minLength={1}
                             placeholder={randomWord}

@@ -23,10 +23,10 @@ export const appRouter = trpc
             userId: z.string()
         }),
         async resolve({ input }) {
-            if (!input.userId) return;
+            if (!input.userId) return [];
             const slugs = await prisma.shortLink.findMany({
                 where: {
-                    slug: input.userId
+                    userId: input.userId
                 }
             });
             return { slugs };
@@ -35,14 +35,16 @@ export const appRouter = trpc
     .mutation("createSlug", {
         input: z.object({
             slug: z.string(),
-            url: z.string()
+            url: z.string(),
+            userId: z.string()
         }),
         async resolve({ input }) {
             try {
                 await prisma.shortLink.create({
                     data: {
                         slug: input.slug,
-                        url: input.url
+                        url: input.url,
+                        userId: input.userId
                     }
                 });
             } catch (e) {
