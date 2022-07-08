@@ -1,6 +1,7 @@
 import { CopyIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/react";
 import { ShortLink } from "@prisma/client";
+import copy from "copy-to-clipboard";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import React from "react";
@@ -31,7 +32,7 @@ const URLs: NextPage = () => {
                 Your Recent Crispy-URLs
             </h1>
             <div className="flex flex-col w-full items-center divide-y-2 divide-teal-500 overflow-x-hidden overflow-y-auto">
-                {slugs.map((slug: ShortLink) => (
+                {slugs?.map((slug: ShortLink) => (
                     <div className="flex flex-col lg:flex-row md:flex-row justify-between lg:w-2/3 w-10/12">
                         <div className="flex items-center space-x-5 lg:justify-center py-5">
                             <GlobeIcon className="h-10 w-10" />
@@ -46,10 +47,16 @@ const URLs: NextPage = () => {
                             </div>
                         </div>
                         <div className="flex space-x-1 items-center mb-3 lg:mb-0 justify-end">
-                            <Button variant="outline" colorScheme="teal">
+                            {/* <Button variant="outline" colorScheme="teal">
                                 Detailed stats
-                            </Button>
-                            <Button leftIcon={<CopyIcon />} colorScheme="teal">
+                            </Button> */}
+                            <Button
+                                leftIcon={<CopyIcon />}
+                                colorScheme="teal"
+                                onClick={() => {
+                                    copy(`${url}/${slug.slug}`);
+                                }}
+                            >
                                 Copy
                             </Button>
                         </div>
