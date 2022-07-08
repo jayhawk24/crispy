@@ -23,7 +23,7 @@ export const appRouter = trpc
             userId: z.string()
         }),
         async resolve({ input }) {
-            if (!input.userId) return [];
+            if (!input.userId) return { slugs: [] };
             const slugs = await prisma.shortLink.findMany({
                 where: {
                     userId: input.userId

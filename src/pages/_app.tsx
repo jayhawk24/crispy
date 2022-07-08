@@ -5,6 +5,7 @@ import { withTRPC } from "@trpc/next";
 import { AppRouter } from "./api/trpc/[trpc]";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { SessionProvider } from "next-auth/react";
+import Layout from "../components/Layout/Layout";
 
 const theme = extendTheme({
     brand: {
@@ -24,7 +25,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (
         <SessionProvider session={pageProps.session}>
             <ChakraProvider theme={theme}>
-                <Component {...pageProps} />
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
             </ChakraProvider>
         </SessionProvider>
     );

@@ -3,19 +3,9 @@ import React from "react";
 import Logo from "../Logo/Logo";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { trpc } from "../../utils/trpc";
 
 const Header = () => {
-    const { data: session, status } = useSession();
-
-    const getSlugs = trpc.useQuery(
-        ["getSlugs", { userId: (session?.userId as string) || "" }],
-        {
-            refetchOnReconnect: false, // replacement for enable: false which isn't respected.
-            refetchOnMount: false,
-            refetchOnWindowFocus: false
-        }
-    );
+    const { status } = useSession();
 
     return (
         <div className="py-5 w-full flex justify-between items-center">
@@ -31,7 +21,7 @@ const Header = () => {
                             Logout
                         </Button>
                         <Button colorScheme={"teal"} variant="solid">
-                            Account
+                            <Link href="/urls">My Links</Link>
                         </Button>
                     </>
                 ) : (
