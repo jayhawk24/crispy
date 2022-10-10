@@ -117,6 +117,16 @@ const CreateLinkForm: NextPage = () => {
                                 });
                                 debounce(slugCheck.refetch, 500);
                             }}
+                            onKeyDown={(e) => {
+                                if (e.key === "Tab" && form.slug.length == 0) {
+                                    setForm(
+                                        state => ({
+                                            ...state,
+                                            slug: randomWord
+                                        })
+                                    )
+                                }
+                            }}
                             minLength={1}
                             placeholder={randomWord}
                             value={form.slug}
