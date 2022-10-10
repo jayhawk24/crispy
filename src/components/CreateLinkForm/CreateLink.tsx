@@ -136,7 +136,7 @@ const CreateLinkForm: NextPage = () => {
             <div className="flex justify-between">
                 <Button
                     onClick={() => {
-                        const slug = nanoid();
+                        const slug = nanoid().replace(/[^0-9a-z]/gi, '') ;
                         setForm({
                             ...form,
                             slug
